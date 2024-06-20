@@ -67,9 +67,6 @@ function RoutineTable(props) {
         if (!datae[item.weekDay]) {
           datae[item.weekDay] = [];
         }
-        // if (!datae[item.weekDay][item.startingPeriod]) {
-        //   datae[item.weekDay][item.startingPeriod] = [];
-        // }
         datae[item.weekDay].push(item);
       });
     }

@@ -65,21 +65,26 @@ router.get("/:id", async function (req, res) {
 })
 
 router.post("/add", async function (req, res) {
-  const { teacherName, shortName, designation } = req.body
+  // console.log(req.body)
+  const { teacherName, shortName, designation, faculty, years } = req.body
+  console.log(years)
 
   try {
     var newTeacher = new Teacher({
       teacherName: teacherName,
       shortName: shortName,
       designation: designation,
+      faculty: faculty,
+      years:years
     })
     console.log(newTeacher)
-    newTeacher.save()
+    await newTeacher.save()
     return res.json({
       status: true,
       data: newTeacher,
       msg: "Teacher saved successfully.",
-    })
+    }),
+    console.log("save vayo")
   } catch {
     return res.json({
       status: false,

@@ -5,6 +5,8 @@ var teacherSchema = new mongoose.Schema({
     teacherName: { type: String, required: false },
     shortName: { type: String, required: false },
     designation: { type: String, required: false },
+    faculty: { type: String, required: false },
+    years:{type:[Number], required:false}
     
 }, { timestamps: true });
 

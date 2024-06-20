@@ -3,13 +3,15 @@ import './styles/SectionSelector.css';
 
 const SectionSelector = ({ onChange }) => {
   const faculties = [
-    { name: 'Civil', sections: ['AB','CD','EF','GH'], years: 4 },
-    { name: 'Electrical', sections: ['AB'], years: 4 },
-    { name: 'Computer', sections: ['AB', 'CD'], years: 4 },
-    { name: 'Electronics', sections: ['AB'], years: 4 },
-    { name: 'Aerospace', sections: ['AB'], years: 4 },
-    { name: 'Mechanical', sections: ['AB'], years: 4 },
-    { name: 'Architecture', sections: ['AB'], years: 5 },
+    { name: 'Civil', sections: ['AB','CD','EF','GH'], years: 4, department:"Department of Civil Engineering" },
+    { name: 'Electrical', sections: ['AB','CD'], years: 4, department: "Department of Electrical Engineering",},
+    { name: 'Computer', sections: ['AB', 'CD'], years: 4 , department:"Department of Electronics and Computer Engineering",},
+    { name: 'Electronics', sections: ['AB'], years: 4, department:"Department of Electronics and Computer Engineering", },
+    { name: 'Aerospace', sections: ['AB'], years: 4, department: "Department of Mechanical and Aerospace Engineering", },
+    { name: 'Mechanical', sections: ['AB'], years: 4, department: "Department of Mechanical and Aerospace Engineering", },
+    { name: 'Architecture', sections: ['AB'], years: 5, department: "Department of Architecture", },
+    { name: 'Chemical', sections: ['AB'], years: 4, department: "Department of Chemical Engineering", },
+    
   ];
 
   const [selectedFaculty, setSelectedFaculty] = useState(null);

@@ -1,0 +1,2 @@
+<Select mode="multiple" className="input" placeholder="Select years" value={selectedYears} options={[...Array(5).keys()].map((i) => ({ label: i + 1, value: i + 1 }))}
+  onChange={(value) => this.setState({ selectedYears: value })}/>
