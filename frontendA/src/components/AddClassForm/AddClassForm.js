@@ -35,6 +35,267 @@ const tailLayout = {
 };
 const { Title } = Typography;
 
+class AddClassForm extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      teacherData: "",
+      programData: "",
+      routineFor: "",
+      subjectName: "",
+      teacherName: [""],
+      classCode: "",
+      classGroup: "",
+      startingPeriod: props.index,
+      noOfPeriod: "",
+      courseCode: "",
+      link1: "",
+      weekDay: "",
+    };
+  }
+
+  componentDidMount() {
+    this.getProgramData();
+    this.getTeacherData();
+  }
+
+  getTeacherData = async () => {
+    let { data: res } = await axios.get(apiTeacherUrl);
+    this.setState({ teacherData: res.data });
+  };
+  getProgramData = async () => {
+    let { data: res } = await axios.get(apiProgramUrl);
+    this.setState({ programData: res.data });
+  };
+
+  onFinish = (values) => {
+    console.log("Received values of form: ", values.routineFor);
+    axios
+      .post(apiClassUrl, {
+        routineFor: values.routineFor,
+        subjectName: values.subjectName,
+        teacherName: values.teacherName,
+        classCode: values.classCode,
+        classGroup: values.classGroup,
+        startingPeriod: values.startingPeriod,
+        noOfPeriod: values.noOfPeriod,
+        courseCode: values.courseCode,
+        link1: values.link1,
+        weekDay: values.weekDay,
+      })
+      .then(message.success("Class Added Sucessfully"))
+      .then(navigate("/class"));
+  };
+
+  render() {
+    const {
+      programData,
+      teacherData,
+      // routineFor,
+      subjectName,
+      // teacherName,
+      // classCode,
+      // classGroup,
+      startingPeriod,
+      // noOfPeriod,
+      // courseCode,
+      // link1,
+      // weekDay,
+    } = this.state;
+
+    return (
+      <Card
+        className="card"
+        style={{ backgroundColor: "#F3F1FF", margin: "12px" }}
+      >
+        <Title className="input" level={3}>
+          Add/Edit Class
+        </Title>
+        <Form
+          {...layout}
+          ref={this.formRef}
+          name="control-ref"
+          onFinish={this.onFinish}
+        >
+          <Form.Item
+            name="routineFor"
+            label="Routine For"
+            rules={[
+              {
+                required: true,
+                message: "Please select a programme",
+              },
+            ]}
+          >
+            <Select
+              placeholder="Select a option and change input text above"
+              onChange={(value) => this.setState({ routineFor: value })}
+              allowClear
+            >
+              {Object.values(programData).map((item, index) => {
+                return (
+                  <Option value={item._id}>
+                    {item.programName}_{item.year}year_
+                    {item.part}part
+                  </Option>
+                );
+              })}
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="weekDay"
+            label="Week Day"
+            rules={[
+              {
+                required: true,
+                message: "Please select a Week Day",
+              },
+            ]}
+          >
+            <Select
+              placeholder="Select a option and change input text above"
+              onChange={(value) => this.setState({ weekDay: value })}
+              allowClear
+            >
+              <Option value="sunday">Sunday</Option>
+              <Option value="monday">Monday</Option>
+              <Option value="tuesday">Tuesday</Option>
+              <Option value="wednesday">Wednesday</Option>
+              <Option value="thursday">Thursday</Option>
+              <Option value="friday">Friday</Option>
+            </Select>
+          </Form.Item>
+          <Form.Item
+            name="courseCode"
+            label="Course Code"
+            rules={[
+              {
+                required: false,
+                message: "Please enter Course Code",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="subjectName"
+            label="Subject Name"
+            rules={[
+              {
+                required: true,
+                message: "Please enter Subject Name",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item
+            name="classCode"
+            label="Class Code"
+            rules={[
+              {
+                required: false,
+                message: "Please enter Class Code",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item
+            name="teacherName"
+            label="Select Teachers"
+            rules={[
+              {
+                required: true,
+                message: "Please select teachers name",
+                type: "array",
+              },
+            ]}
+          >
+            <Select
+              mode="multiple"
+              placeholder="Select a option and change input text above"
+              onChange={(value) => this.setState({ teacherName: value })}
+            >
+              {Object.values(teacherData).map((item, index) => {
+                return <Option value={item._id}>{item.teacherName}</Option>;
+              })}
+            </Select>
+          </Form.Item>
+
+          <Form.Item
+            name="classGroup"
+            label="Class Group"
+            rules={[
+              {
+                required: false,
+                message: "Please enter Class Group",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+          <Form.Item label="Starting Period">
+            <Form.Item
+              name="startingPeriod"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter Starting Period",
+                },
+              ]}
+              noStyle
+            >
+              <InputNumber value={startingPeriod} min={1} max={8} />
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item label="No Of Periods">
+            <Form.Item
+              name="noOfPeriod"
+              rules={[
+                {
+                  required: true,
+                  message: "Please enter No Of Periods",
+                },
+              ]}
+              noStyle
+            >
+              <InputNumber min={1} max={8} />
+            </Form.Item>
+          </Form.Item>
+
+          <Form.Item
+            name="link1"
+            label="Class Link"
+            rules={[
+              {
+                required: false,
+                message: "Please enter Class Link",
+              },
+            ]}
+          >
+            <Input />
+          </Form.Item>
+
+          <Form.Item {...tailLayout}>
+            <Button
+              type="primary"
+              style={{ backgroundColor: "#141414" }}
+              htmlType="submit"
+            >
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+      </Card>
+    );
+  }
+}
+
 
 // class AddClassPopupForm extends Component {
 class AddClassPopupForm extends Component {
@@ -57,7 +318,9 @@ class AddClassPopupForm extends Component {
       courseCode: "",
       link1: "",
       weekDay: "",
-      formCollapsed: false
+      formCollapsed: false,
+      subjectSelected:false
+     
 
     };
     this.getSubjectData();
@@ -76,13 +339,15 @@ class AddClassPopupForm extends Component {
   
   getSubjectData = async () => {
     console.log('Got subjects')
+   
     let response = await axios.get(apiSubjectUrl + `/`);
     let { data: res } = response;
-    // console.log(response,"look response")
-    this.setState({ subjectData: res.data });
-    if (this.subjectData) {
-     await  this.getTeacherData();
-    }
+    this.setState({ subjectData: res.data })
+    
+    
+  //   if (this.state.subjectSelected) {
+  //   await this.getTeacherData().then(() => this.setState({ subjectSelected: !this.state.subjectData }));
+  // }
     
   }
 
@@ -233,7 +498,8 @@ class AddClassPopupForm extends Component {
               optionFilterProp="label"
               onChange={(value) => {
                 console.log("value", value)
-                this.setState({ selectedSubjectID: value })
+               this.getTeacherData()
+                this.setState({subjectSelected:!this.state.subjectSelected})
               }}
             >
               {subjectData.map((item, index) => {
